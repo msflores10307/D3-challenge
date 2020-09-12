@@ -94,14 +94,6 @@ d3.csv("assets/data/data.csv").then(function(censusData) {
    }).catch(function(error) {
      console.log(error);
  
-// Step 6: Initialize tool tip
-    // ==============================
-    var toolTip = d3.tip()
-      .attr("class", "tooltip")
-      .offset([80, -60])
-      .html(function(data, index) {
-        return (`${data.abbr}<br>Hair length: ${data.abbr}<br>Hits: ${data.abbr}`);
-      });
 
     
 });
