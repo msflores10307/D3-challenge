@@ -1,5 +1,5 @@
 // quick console test to make sure app.js is being picked up by index.html
-console.log("Hello World!!!")
+console.log("Hello SVG!!!")
 
 //defines margin parameter
 var svgWidth = 960;
@@ -34,6 +34,7 @@ d3.csv("assets/data/data.csv").then(function(censusData) {
       data.income = +data.income;
     });
 
+
     var xLinearScale = d3.scaleLinear()
       .domain([20, d3.max(censusData, d => d.age)])
       .range([0, width]);
@@ -62,13 +63,10 @@ d3.csv("assets/data/data.csv").then(function(censusData) {
     .attr("cx", d => xLinearScale(d.age))
     .attr("cy", d => yLinearScale(d.income))
     .attr("class",'stateCircle')
-    .attr("r", "13")
-    // .attr("fill", "blue")
-    // .attr("opacity", ".5")
+    .attr("r", "13");
 
-  console.log(circlesGroup);
   
-  // HERE
+  // State
   var texts = chartGroup.append("g").selectAll("text")
   .data(censusData).enter().append("text")
   .text(function(data){return data.abbr})
@@ -79,21 +77,37 @@ d3.csv("assets/data/data.csv").then(function(censusData) {
 
    // add axes formatting and such here 
        // Create axes labels
-       chartGroup.append("text")
+        chartGroup.append("text")
        .attr("transform", "rotate(-90)")
        .attr("y", 0 - margin.left + 40)
        .attr("x", 0 - (height / 2))
        .attr("dy", "1em")
-       .attr("class", "axisText")
+       .attr("class", "aText")
        .text("Y FOR NOW - CHANGE LATER");
  
      chartGroup.append("text")
        .attr("transform", `translate(${width / 2}, ${height + margin.top + 30})`)
-       .attr("class", "axisText")
+       .attr("class", "aText")
        .text("X FOR NOW - CHANGE LATER");
-   }).catch(function(error) {
-     console.log(error);
- 
 
-    
-});
+
+       var toolTip = d3.tip()
+       .attr("class", "d3-tip")
+       .html(function(data, index) {
+         return (` Age: ${data.age}<br> Income: ${data.income}`);
+       });
+   
+ 
+     chartGroup.call(toolTip);  
+ 
+     circlesGroup.on("mouseover", function(data) {
+       toolTip.show(data, this);
+     })
+     .on("mouseout", function(data, index) {
+         toolTip.hide(data);
+       });
+
+
+
+   }).catch(function(error) {
+     console.log(error)})
