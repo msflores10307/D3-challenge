@@ -96,7 +96,7 @@ d3.csv("assets/data/data.csv").then(function(censusData) {
   var toolTip = d3.tip()
   .attr("class", "d3-tip")
   .html(function(data, index) {
-    return (` X: ${data.age}<br> Y: ${data.income}`);
+    return (`${data.abbr} <br> Median Age: ${data.age}<br> Median Income: ${data.income}`);
   });
 
   // calls tooltip
