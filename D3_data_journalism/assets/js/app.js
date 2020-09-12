@@ -1,5 +1,5 @@
 // quick console test to make sure app.js is being picked up by index.html
-console.log("Hello Tool!!!")
+console.log("Hello World!!!")
 
 //defines margin parameter
 var svgWidth = 960;
@@ -61,9 +61,16 @@ d3.csv("assets/data/data.csv").then(function(censusData) {
     .append("circle")
     .attr("cx", d => xLinearScale(d.age))
     .attr("cy", d => yLinearScale(d.income))
-    .attr("r", "5")
-    .attr("fill", "blue")
-    .attr("opacity", ".8");
+    .attr("r", "10")
+    .attr("class",'stateCircle')
+    // .attr("fill", "blue")
+    // .attr("opacity", ".5")
+
+  console.log(circlesGroup);
+  
+  var texts = chartGroup.append("g").selectAll("text")
+  .data(censusData).enter().append("text").text(function(data){return data.abbr}).attr("x", d => xLinearScale(d.age)).attr("class",'stateCircle')
+  .attr("y", d => yLinearScale(d.income))
 
    // add axes formatting and such here 
        // Create axes labels
@@ -82,6 +89,14 @@ d3.csv("assets/data/data.csv").then(function(censusData) {
    }).catch(function(error) {
      console.log(error);
  
+// Step 6: Initialize tool tip
+    // ==============================
+    var toolTip = d3.tip()
+      .attr("class", "tooltip")
+      .offset([80, -60])
+      .html(function(data, index) {
+        return (`${data.abbr}<br>Hair length: ${data.abbr}<br>Hits: ${data.abbr}`);
+      });
 
-
+    
 });
