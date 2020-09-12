@@ -61,16 +61,21 @@ d3.csv("assets/data/data.csv").then(function(censusData) {
     .append("circle")
     .attr("cx", d => xLinearScale(d.age))
     .attr("cy", d => yLinearScale(d.income))
-    .attr("r", "10")
     .attr("class",'stateCircle')
+    .attr("r", "13")
     // .attr("fill", "blue")
     // .attr("opacity", ".5")
 
   console.log(circlesGroup);
   
+  // HERE
   var texts = chartGroup.append("g").selectAll("text")
-  .data(censusData).enter().append("text").text(function(data){return data.abbr}).attr("x", d => xLinearScale(d.age)).attr("class",'stateCircle')
-  .attr("y", d => yLinearScale(d.income))
+  .data(censusData).enter().append("text")
+  .text(function(data){return data.abbr})
+  .attr("x", d => xLinearScale(d.age))
+  .attr("y", d => yLinearScale(d.income)+6)
+  .attr("class",'stateCircle')
+  .attr("class",'stateText')
 
    // add axes formatting and such here 
        // Create axes labels
