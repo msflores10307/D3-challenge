@@ -80,16 +80,16 @@ d3.csv("assets/data/data.csv").then(function(censusData) {
   // Creates axes labels
   chartGroup.append("text")
   .attr("transform", "rotate(-90)")
-  .attr("y", 0 - margin.left + 40)
+  .attr("y", 0 - margin.left + 20)
   .attr("x", 0 - (height / 2))
   .attr("dy", "1em")
-  .attr("class", "aText")
+  .attr("class", "aText").attr("class","h2")
   .text("Income");
 
     
   chartGroup.append("text")
     .attr("transform", `translate(${width / 2}, ${height + margin.top + 30})`)
-    .attr("class", "aText")
+    .attr("class", "aText").attr("class","h2")
     .text("Age");
 
   // initializes tooltip
