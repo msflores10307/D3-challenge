@@ -20,7 +20,7 @@ var svg = d3.select("#scatter")
   .append("svg")
   .attr("width", svgWidth)
   .attr("height", svgHeight);
-
+// appends group to build plot object
 var chartGroup = svg.append("g")
   .attr("transform", `translate(${margin.left}, ${margin.top})`);
 
@@ -29,12 +29,13 @@ d3.csv("assets/data/data.csv").then(function(censusData) {
 
   console.log(censusData)
 
+  // converts imported data to integers
     censusData.forEach(function(data) {
       data.age = +data.age;
       data.income = +data.income;
     });
 
-
+  // creates scaling functions for x and y
     var xLinearScale = d3.scaleLinear()
       .domain([20, d3.max(censusData, d => d.age)])
       .range([0, width]);
@@ -43,15 +44,16 @@ d3.csv("assets/data/data.csv").then(function(censusData) {
       .domain([0, d3.max(censusData, d => d.income)])
       .range([height, 0]);
 
-
+  
+    
+    
+  // appends bottom axis label 
     var bottomAxis = d3.axisBottom(xLinearScale);
-    var leftAxis = d3.axisLeft(yLinearScale);
-
-
     chartGroup.append("g")
       .attr("transform", `translate(0, ${height})`)
       .call(bottomAxis);
-
+  // appends left axis label
+    var leftAxis = d3.axisLeft(yLinearScale);
     chartGroup.append("g")
       .call(leftAxis);
 
@@ -66,7 +68,7 @@ d3.csv("assets/data/data.csv").then(function(censusData) {
     .attr("r", "13");
 
   
-  // State
+  // State label
   var texts = chartGroup.append("g").selectAll("text")
   .data(censusData).enter().append("text")
   .text(function(data){return data.abbr})
@@ -75,39 +77,40 @@ d3.csv("assets/data/data.csv").then(function(censusData) {
   .attr("class",'stateCircle')
   .attr("class",'stateText')
 
-   // add axes formatting and such here 
-       // Create axes labels
-        chartGroup.append("text")
-       .attr("transform", "rotate(-90)")
-       .attr("y", 0 - margin.left + 40)
-       .attr("x", 0 - (height / 2))
-       .attr("dy", "1em")
-       .attr("class", "aText")
-       .text("Y FOR NOW - CHANGE LATER");
- 
-     chartGroup.append("text")
-       .attr("transform", `translate(${width / 2}, ${height + margin.top + 30})`)
-       .attr("class", "aText")
-       .text("X FOR NOW - CHANGE LATER");
+  // Creates axes labels
+  chartGroup.append("text")
+  .attr("transform", "rotate(-90)")
+  .attr("y", 0 - margin.left + 40)
+  .attr("x", 0 - (height / 2))
+  .attr("dy", "1em")
+  .attr("class", "aText")
+  .text("Income");
+
+    
+  chartGroup.append("text")
+    .attr("transform", `translate(${width / 2}, ${height + margin.top + 30})`)
+    .attr("class", "aText")
+    .text("Age");
+
+  // initializes tooltip
+  var toolTip = d3.tip()
+  .attr("class", "d3-tip")
+  .html(function(data, index) {
+    return (` X: ${data.age}<br> Y: ${data.income}`);
+  });
+
+  // calls tooltip
+  chartGroup.call(toolTip);  
+  
+  // creates listener for tool tip mouse events
+  circlesGroup.on("mouseover", function(data) {
+    toolTip.show(data, this);
+  })
+  .on("mouseout", function(data, index) {
+      toolTip.hide(data);
+    });
 
 
-       var toolTip = d3.tip()
-       .attr("class", "d3-tip")
-       .html(function(data, index) {
-         return (` Age: ${data.age}<br> Income: ${data.income}`);
-       });
-   
- 
-     chartGroup.call(toolTip);  
- 
-     circlesGroup.on("mouseover", function(data) {
-       toolTip.show(data, this);
-     })
-     .on("mouseout", function(data, index) {
-         toolTip.hide(data);
-       });
 
-
-
-   }).catch(function(error) {
-     console.log(error)})
+}).catch(function(error) {
+  console.log(error)})
