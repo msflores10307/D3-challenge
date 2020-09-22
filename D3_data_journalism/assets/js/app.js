@@ -32,16 +32,16 @@ d3.csv("assets/data/data.csv").then(function(censusData) {
   // converts imported data to integers
     censusData.forEach(function(data) {
       data.age = +data.age;
-      data.income = +data.income;
+      data.healthcare = +data.healthcare;
     });
 
   // creates scaling functions for x and y
     var xLinearScale = d3.scaleLinear()
-      .domain([20, d3.max(censusData, d => d.age)])
+      .domain([30, d3.max(censusData, d => d.age)])
       .range([0, width]);
 
     var yLinearScale = d3.scaleLinear()
-      .domain([0, d3.max(censusData, d => d.income)])
+      .domain([0, d3.max(censusData, d => d.healthcare)])
       .range([height, 0]);
 
   
@@ -63,9 +63,9 @@ d3.csv("assets/data/data.csv").then(function(censusData) {
     .enter()
     .append("circle")
     .attr("cx", d => xLinearScale(d.age))
-    .attr("cy", d => yLinearScale(d.income))
+    .attr("cy", d => yLinearScale(d.healthcare))
     .attr("class",'stateCircle')
-    .attr("r", "13");
+    .attr("r", "11");
 
   
   // State label
@@ -73,9 +73,9 @@ d3.csv("assets/data/data.csv").then(function(censusData) {
   .data(censusData).enter().append("text")
   .text(function(data){return data.abbr})
   .attr("x", d => xLinearScale(d.age))
-  .attr("y", d => yLinearScale(d.income)+6)
+  .attr("y", d => yLinearScale(d.healthcare)+4) // + 6
   .attr("class",'stateCircle')
-  .attr("class",'stateText')
+  .attr("class",'stateText').attr("font-size","10")
 
   // Creates axes labels
   chartGroup.append("text")
@@ -84,7 +84,7 @@ d3.csv("assets/data/data.csv").then(function(censusData) {
   .attr("x", 0 - (height / 2))
   .attr("dy", "1em")
   .attr("class", "aText").attr("class","h2")
-  .text("Income");
+  .text("Healthcare");
 
     
   chartGroup.append("text")
@@ -96,7 +96,7 @@ d3.csv("assets/data/data.csv").then(function(censusData) {
   var toolTip = d3.tip()
   .attr("class", "d3-tip")
   .html(function(data, index) {
-    return (`${data.abbr} <br> Median Age: ${data.age}<br> Median Income: ${data.income}`);
+    return (`${data.abbr} <br> Median Age: ${data.age}<br> Healthcare: ${data.healthcare}`);
   });
 
   // calls tooltip
