@@ -2,14 +2,14 @@
 console.log("Hello SVG!!!")
 
 //defines margin parameter
-var svgWidth = 960;
-var svgHeight = 500;
+var svgWidth = 1000;
+var svgHeight = 600;
 
 var margin = {
-  top: 20,
-  right: 40,
-  bottom: 60,
-  left: 100
+  top: 10,
+  right: 30,
+  bottom: 50,
+  left: 90
 };
 
 var width = svgWidth - margin.left - margin.right;
